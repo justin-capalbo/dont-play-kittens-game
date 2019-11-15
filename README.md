@@ -2,6 +2,8 @@
 
 Seriously, don't.  But if you do, this script might make it easier for you to deal with the pleathora of shit they throw at you.
 
+[Kittens Game](http://bloodrizer.ru/games/kittens/#)
+
 # Usage
 
 First get yourself a custom Javascript injection extension for your browser.
