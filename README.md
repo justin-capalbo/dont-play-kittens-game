@@ -4,6 +4,10 @@ Seriously, don't.  But if you do, this script might make it easier for you to de
 
 [Kittens Game](http://bloodrizer.ru/games/kittens/#)
 
+# Browser compatibility
+
+This might not be compatible with older versions of certain browsers.  If you get errors when trying to inject the script, try upgrading to the latest Chrome or Firefox.  But most of the Javascript being used is pretty tame. 
+
 # Usage
 
 First get yourself a custom Javascript injection extension for your browser.
