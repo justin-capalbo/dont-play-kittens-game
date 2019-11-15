@@ -8,8 +8,8 @@ Seriously, don't.  But if you do, this script might make it easier for you to de
 
 First get yourself a custom Javascript injection extension for your browser.
 
-Chrome Users: [Custom Javascript 2/CJS](https://chrome.google.com/webstore/detail/custom-javascript-for-web/ddbjnfjiigjmcpcpkmhogomapikjbjdk?hl=en)
-Firefox Users: [Code Injector](https://addons.mozilla.org/en-US/firefox/addon/codeinjector/)
+- Chrome Users: [Custom Javascript 2/CJS](https://chrome.google.com/webstore/detail/custom-javascript-for-web/ddbjnfjiigjmcpcpkmhogomapikjbjdk?hl=en)
+- Firefox Users: [Code Injector](https://addons.mozilla.org/en-US/firefox/addon/codeinjector/)
 
 You will paste whatever Javascript you want to load and configure for which hosts/websites it should load on, then simply update the saved code whenever there are changes.  Then, just reload the page and enjoy your new buttons.  
 
