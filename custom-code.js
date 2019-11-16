@@ -32,25 +32,27 @@ const tradeToCapTitanium = () => {
     const gold = game.resPool.get("gold").value;
     const slabs = game.resPool.get("slab").value;
     const catpower = game.resPool.get("manpower").value;
-    const goldCappedTrades = Math.floor(gold / 15);
-    const slabCappedTrades = Math.floor(slabs / 50);
-    const catpowerCappedTrades = Math.floor(catpower / 50);
-    const tradesPossible = Math.min(goldCappedTrades, slabCappedTrades, catpowerCappedTrades);
+    const tradeCaps = [
+        { res: "gold", amt: Math.floor(gold/15) },
+        { res: "slab", amt: Math.floor(slabs/50) },
+        { res: "catpower", amt: Math.floor(catpower/50) },
+    ];
+    const tradesPossible = Math.min(...tradeCaps.map(({amt}) => amt));
+    const cappedResources = tradeCaps
+        .filter(cap => cap.amt === tradesPossible)
+        .map(cap => cap.res);
 
     if (tradesPossible === 0) {
-        console.log("not enough gold to trade");
+        this.game.msg(`Not enough ${cappedResources.join(",")} to trade with zebras`);
         return;
     }
 
     const optimalZebraTrades = getOptimalZebraTrades();
     const nbTrades = Math.min(tradesPossible, optimalZebraTrades);
 
-    console.log(`Performing ${nbTrades} trades with zebras`);
-    console.log("desired trades", optimalZebraTrades);
-    console.log("trades possible", tradesPossible);
     this.game.msg(`Approximately ${optimalZebraTrades} trades needed to cap Titanium`);
     if (nbTrades < optimalZebraTrades) {
-        this.game.msg("Trade with zebras capped by resources");
+        this.game.msg(`Trade with zebras limited to ${nbTrades} by ${cappedResources.join(",")}`);
     }
 
     var zebras = game.diplomacy.get("zebras");
