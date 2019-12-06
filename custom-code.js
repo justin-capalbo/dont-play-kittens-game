@@ -134,11 +134,17 @@ const tradeWithSpiders = () => {
 /* Game Logic*/
 
 const spendCulture = () => {
-    [
-        "parchment",
-        "manuscript",
-        "compedium",
-    ].forEach(res => gamePage.craftAll(res));
+    const resources = [ "parchment" ];
+    if (toggleValues.shouldMakeManuscripts) {
+        resources.push("manuscript");
+    }
+    if (toggleValues.shouldMakeCompendiums) {
+        resources.push("compedium");
+    }
+    if (toggleValues.shouldMakeBlueprints) {
+        resources.push("blueprint");
+    }
+    resources.forEach(res => gamePage.craftAll(res));
     gamePage.huntAll({ preventDefault: () => null });
 }
 
@@ -157,21 +163,45 @@ const craftMyResources = (...extras) => {
 
 /* User interface */
 
-const header = document.getElementsByClassName("right-tab-header")[0];
 
+const header = document.getElementsByClassName("right-tab-header")[0];
 const addButton = (text, handleClick, id) => {
     const newBtn = document.createElement("button");
     newBtn.appendChild(document.createTextNode(text));
     newBtn.onclick = handleClick;
     newBtn.id = id;
     header.appendChild(newBtn);
-}
+};
+
+const toggleValues = {};
+
+const handleCheckbox = (name) => {
+    toggleValues[name] = !(!!toggleValues[name]);
+};
+
+const addCheckbox = (label, name) => { 
+    const container = document.createElement("label");
+    const checkbox = document.createElement("input");
+
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("style", "display: inline;");
+    checkbox.onclick = () => handleCheckbox(name);
+
+    container.setAttribute("style", "display: block;");
+    container.appendChild(checkbox);
+    container.appendChild(document.createTextNode(label));
+    header.append(container);
+};
 
 addButton("Make stuff", craftMyResources());
 addButton("Make stuff + plates", craftMyResources("plate"));
 addButton("Make stuff + steel", craftMyResources("steel"));
 addButton("Make all the stuff", craftMyResources("steel", "plate"));
-addButton("Spend culture", spendCulture);
-addButton("Spend culture and praise", spendAndPray);
 addButton("Trade to cap titanium", tradeToCapTitanium);
 addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
+
+addButton("Do culture tasks", spendCulture);
+addButton("Do culture tasks and praise", spendAndPray);
+addCheckbox("Make manuscripts", "shouldMakeManuscripts");
+addCheckbox("Make compendiums", "shouldMakeCompendiums");
+addCheckbox("Make blueprints", "shouldMakeBlueprints");
