@@ -135,14 +135,14 @@ const tradeWithSpiders = () => {
 
 const spendCulture = () => {
     const resources = [ "parchment" ];
-    if (toggleValues.shouldMakeManuscripts) {
-        resources.push("manuscript");
+    if (toggleValues.shouldMakeBlueprints) {
+        resources.push("blueprint");
     }
     if (toggleValues.shouldMakeCompendiums) {
         resources.push("compedium");
     }
-    if (toggleValues.shouldMakeBlueprints) {
-        resources.push("blueprint");
+    if (toggleValues.shouldMakeManuscripts) {
+        resources.push("manuscript");
     }
     resources.forEach(res => gamePage.craftAll(res));
     gamePage.huntAll({ preventDefault: () => null });
