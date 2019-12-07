@@ -225,6 +225,7 @@ const withContainer = (callback, style) => {
 const borderStyle = `
     border: 1px solid darkgray; 
     margin-top: 4px;
+    padding: 4px;
     border-radius: 3px;
 `;
 
