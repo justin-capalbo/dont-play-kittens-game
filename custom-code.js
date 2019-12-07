@@ -135,13 +135,14 @@ const tradeWithSpiders = () => {
 
 const spendCulture = () => {
     const resources = [ "parchment" ];
-    if (toggleValues.shouldMakeBlueprints) {
+    const { blueprint, compendium, manuscript } = toggleValues;
+    if (blueprint) {
         resources.push("blueprint");
     }
-    if (toggleValues.shouldMakeCompendiums) {
+    if (compendium) {
         resources.push("compedium");
     }
-    if (toggleValues.shouldMakeManuscripts) {
+    if (manuscript) {
         resources.push("manuscript");
     }
     resources.forEach(res => gamePage.craftAll(res));
@@ -153,12 +154,23 @@ const spendAndPray = () => {
     document.getElementById("fastPraiseContainer").firstChild.click()
 };
 
-const stuff = ["slab", "beam"];
 
-const craftMyResources = (...extras) => {
-    return () => {
-        [...extras, ...stuff].forEach(res => gamePage.craftAll(res));
+const craftMyResources = () => {
+    const stuff = [];
+    const { beam, slab, plate, steel } = toggleValues;
+    if (steel) {
+        stuff.push("steel");
     }
+    if (plate) {
+        stuff.push("plate");
+    }
+    if (beam) {
+        stuff.push("beam");
+    }
+    if (slab) {
+        stuff.push("slab");
+    }
+    stuff.forEach(res => gamePage.craftAll(res));
 };
 
 /* User interface */
@@ -179,13 +191,17 @@ const handleCheckbox = (name) => {
     toggleValues[name] = !(!!toggleValues[name]);
 };
 
-const addCheckbox = (label, name) => { 
+const addCheckbox = (label, name, checked) => { 
     const container = document.createElement("label");
     const checkbox = document.createElement("input");
 
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("style", "display: inline;");
     checkbox.onclick = () => handleCheckbox(name);
+    if (checked) {
+        checkbox.click();
+        checkbox.setAttribute("checked", true);
+    }
 
     container.setAttribute("style", "display: block;");
     container.appendChild(checkbox);
@@ -193,15 +209,17 @@ const addCheckbox = (label, name) => {
     header.append(container);
 };
 
-addButton("Make stuff", craftMyResources());
-addButton("Make stuff + plates", craftMyResources("plate"));
-addButton("Make stuff + steel", craftMyResources("steel"));
-addButton("Make all the stuff", craftMyResources("steel", "plate"));
 addButton("Trade to cap titanium", tradeToCapTitanium);
 addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
 
+addButton("Make stuff", craftMyResources);
+addCheckbox("Beam", "beam", true);
+addCheckbox("Slab", "slab", true);
+addCheckbox("Plate", "plate");
+addCheckbox("Steel", "steel");
+
 addButton("Do culture tasks", spendCulture);
 addButton("Do culture tasks and praise", spendAndPray);
-addCheckbox("Make manuscripts", "shouldMakeManuscripts");
-addCheckbox("Make compendiums", "shouldMakeCompendiums");
-addCheckbox("Make blueprints", "shouldMakeBlueprints");
+addCheckbox("Make manuscripts", "manuscript", true);
+addCheckbox("Make compendiums", "compendium");
+addCheckbox("Make blueprints", "blueprint");
