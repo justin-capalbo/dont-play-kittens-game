@@ -225,11 +225,6 @@ const borderStyle = `
     border-radius: 3px;
 `;
 
-withContainer(({ addButton }) => {
-    addButton("Trade to cap titanium", tradeToCapTitanium);
-    addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
-}, borderStyle);
-
 withContainer(({ addButton, addCheckbox }) => {
     addButton("Make stuff", craftMyResources);
     addCheckbox("Beam", "beam", true);
@@ -244,4 +239,9 @@ withContainer(({ addButton, addCheckbox }) => {
     addCheckbox("Manuscripts", "manuscript", true);
     addCheckbox("Compendiums", "compendium");
     addCheckbox("Blueprints", "blueprint");
+}, borderStyle);
+
+withContainer(({ addButton }) => {
+    addButton("Trade to cap titanium", tradeToCapTitanium);
+    addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
 }, borderStyle);
