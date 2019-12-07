@@ -241,7 +241,7 @@ withContainer(({ addButton, addCheckbox }) => {
 withContainer(({ addButton, addCheckbox }) => {
     addButton("Do culture tasks", spendCulture);
     addButton("Do culture tasks and praise", spendAndPray);
-    addCheckbox("Make manuscripts", "manuscript", true);
-    addCheckbox("Make compendiums", "compendium");
-    addCheckbox("Make blueprints", "blueprint");
+    addCheckbox("Manuscripts", "manuscript", true);
+    addCheckbox("Compendiums", "compendium");
+    addCheckbox("Blueprints", "blueprint");
 }, borderStyle);
