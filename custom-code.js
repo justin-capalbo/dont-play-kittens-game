@@ -177,13 +177,6 @@ const craftMyResources = () => {
 
 
 const header = document.getElementsByClassName("right-tab-header")[0];
-const addButton = (text, handleClick, id) => {
-    const newBtn = document.createElement("button");
-    newBtn.appendChild(document.createTextNode(text));
-    newBtn.onclick = handleClick;
-    newBtn.id = id;
-    header.appendChild(newBtn);
-};
 
 const toggleValues = {};
 
@@ -191,35 +184,64 @@ const handleCheckbox = (name) => {
     toggleValues[name] = !(!!toggleValues[name]);
 };
 
-const addCheckbox = (label, name, checked) => { 
-    const container = document.createElement("label");
-    const checkbox = document.createElement("input");
-
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("style", "display: inline;");
-    checkbox.onclick = () => handleCheckbox(name);
-    if (checked) {
-        checkbox.click();
-        checkbox.setAttribute("checked", true);
+const withContainer = (callback, style) => {
+    const containerDiv = document.createElement("div");
+    if (style) {
+        containerDiv.setAttribute("style", style);
     }
+    const container = {
+        addButton: (text, handleClick, id) => {
+            const newBtn = document.createElement("button");
+            newBtn.appendChild(document.createTextNode(text));
+            newBtn.onclick = handleClick;
+            newBtn.id = id;
+            containerDiv.appendChild(newBtn);
+        },
+        addCheckbox: (labelText, name, checked) => { 
+            const label = document.createElement("label");
+            const checkbox = document.createElement("input");
 
-    container.setAttribute("style", "display: block;");
-    container.appendChild(checkbox);
-    container.appendChild(document.createTextNode(label));
-    header.append(container);
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.setAttribute("style", "display: inline;");
+            checkbox.onclick = () => handleCheckbox(name);
+            if (checked) {
+                checkbox.click();
+                checkbox.setAttribute("checked", true);
+            }
+
+            label.setAttribute("style", "display: block;");
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(labelText));
+            containerDiv.appendChild(label);
+        },
+    };
+    callback(container);
+    header.append(containerDiv);
 };
 
-addButton("Trade to cap titanium", tradeToCapTitanium);
-addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
+const borderStyle = `
+    border: 1px solid darkgray; 
+    margin-top: 4px;
+    border-radius: 3px;
+`;
 
-addButton("Make stuff", craftMyResources);
-addCheckbox("Beam", "beam", true);
-addCheckbox("Slab", "slab", true);
-addCheckbox("Plate", "plate");
-addCheckbox("Steel", "steel");
+withContainer(({ addButton }) => {
+    addButton("Trade to cap titanium", tradeToCapTitanium);
+    addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
+}, borderStyle);
 
-addButton("Do culture tasks", spendCulture);
-addButton("Do culture tasks and praise", spendAndPray);
-addCheckbox("Make manuscripts", "manuscript", true);
-addCheckbox("Make compendiums", "compendium");
-addCheckbox("Make blueprints", "blueprint");
+withContainer(({ addButton, addCheckbox }) => {
+    addButton("Make stuff", craftMyResources);
+    addCheckbox("Beam", "beam", true);
+    addCheckbox("Slab", "slab", true);
+    addCheckbox("Plate", "plate");
+    addCheckbox("Steel", "steel");
+}, borderStyle);
+
+withContainer(({ addButton, addCheckbox }) => {
+    addButton("Do culture tasks", spendCulture);
+    addButton("Do culture tasks and praise", spendAndPray);
+    addCheckbox("Make manuscripts", "manuscript", true);
+    addCheckbox("Make compendiums", "compendium");
+    addCheckbox("Make blueprints", "blueprint");
+}, borderStyle);
