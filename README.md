@@ -4,11 +4,11 @@ Seriously, don't.  But if you do, this script might make it easier for you to de
 
 [Kittens Game](http://bloodrizer.ru/games/kittens/#)
 
-# Browser compatibility
+## Browser compatibility
 
-This might not be compatible with older versions of certain browsers.  If you get errors when trying to inject the script, try upgrading to the latest Chrome or Firefox.  But most of the Javascript being used is pretty tame. 
+This might not be compatible with older versions of certain browsers because it uses more modern javascript.  If you get errors when trying to inject the script, try upgrading to the latest Chrome or Firefox.  But most of the Javascript being used is pretty tame. 
 
-# Usage
+## Usage
 
 First get yourself a custom Javascript injection extension for your browser.
 
@@ -17,7 +17,7 @@ First get yourself a custom Javascript injection extension for your browser.
 
 You will paste whatever Javascript you want to load and configure for which hosts/websites it should load on, then simply update the saved code whenever there are changes.  Then, just reload the page and enjoy your new buttons.  
 
-# Functions
+## Tools
 
 You can probably figure out what the UI elements do through experimentation but I'll post a summary.  Unless otherwise specified, things happen in the order they are written from top to bottom.
 
@@ -37,6 +37,8 @@ You can probably figure out what the UI elements do through experimentation but 
 _*** In the code, there's a typo causing compendiums to be called `compediums` - this is intentional and is not a bug in the script!_
 
 ### Trade
+
+Here are some useful functions that do some assisted trading.
 
 #### Trade to cap titanium
 
