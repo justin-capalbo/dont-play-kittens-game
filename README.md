@@ -23,44 +23,39 @@ You can probably figure out what the UI elements do through experimentation but 
 
 ### Make stuff
 
-- Crafts all Beams
-- Crafts all Slabs
+- Crafts **all** resources toggled by the accompanying checkboxes
 
-### Make stuff + plates
+### Do culture activities (optionally praise)
 
-- Does everything `Make stuff` does
-- Crafts all plates
-
-### Make stuff + steel
-
-- Does everything `Make stuff` does
-- Crafts all steel
-
-### Make all the stuff
-
-- Does everything `Make stuff` does
-- Crafts all steel
-- Crafts all plates
-
-### Spend culture
-
-- Crafts all parchemnt
-- Crafts all manuscript
-- Crafts all compendiums ***
-- Sends as many hunters as you can
+- Crafts all of parchment, manuscripts, and compendiums*** depending on those selected via the accompanying checkboxes, then hunts.  The order is as follows:
+  1. Craft all blueprints (if selected)
+  2. Craft all compendiums (if selected)
+  3. Craft all manuscripts (if selected) 
+  4. Send all hunters
+- *Do culture activities and praise* will do the same thing, but will follow culture activities by praising the sun.
 
 _*** In the code, there's a typo causing compendiums to be called `compediums` - this is intentional and is not a bug in the script!_
 
-### Spend culture and praise 
+### Trade
 
-- Does everything that `Spend culture` does
-- Praise the sun
-
-### Trade to cap titanium
+#### Trade to cap titanium
 
 - Runs a heuristic to determine the "optimal" number of times to trade with the Zebras given your gold, slabs, catpower, average expected titanium per trade, and trade failure rate, then trades with the Zebras that many times.
 
 Caveat with this one is that if the game is updated and the calculation for trading changes, this function has to be updated or it's going to be off in it's calculations.  It's also based on averages, so it's not perfect - This becomes less of an issue when you have enough ships to ensure titanium in every trade and enough tradeposts that your failure rate is low.
+
+The calculation is a little buggy at high titanium caps, so you might have to click the button 2 or even 3 times to cap titanium.
+
+#### Trade for coal (match iron)
+
+- Runs a calculation on the approximate amount of trades with spiders needed to cap coal, or reach an amount of coal equal to your current iron amount, whichiever is smaller.  Then, it trades with spiders that many times.  
+- This estimates your aproximate coal per trade by keeping track of the average coal of the coal gained on the last several trades, so if you are ramping up tradeposts you might notice this doesn't work 100% perfectly.
+
+### Cycles
+
+- Keeps track of the current cycle and displays it in a colored font next to the other 9 cycles which are displayed in a grayed out font.
+- The cycles are displayed in order so you always know which ones are coming up soon.  
+- TODO: Add a tooltip to the inactive cycles so you know what effects they might have even if they aren't active.  Unfortunately bloodrizer didn't encapsulate the tooltip logic, so it would have to be completely duplicated or written from scratch.
 
 # The Fuuuuuuuture
 
