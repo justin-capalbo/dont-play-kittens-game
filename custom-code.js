@@ -192,7 +192,7 @@ const withContainer = (callback, style) => {
     if (style) {
         containerDiv.setAttribute("style", style);
     }
-    const container = {
+    const containerTools = {
         addButton: (text, handleClick, id) => {
             const newBtn = document.createElement("button");
             newBtn.appendChild(document.createTextNode(text));
@@ -217,8 +217,19 @@ const withContainer = (callback, style) => {
             label.appendChild(document.createTextNode(labelText));
             containerDiv.appendChild(label);
         },
+        appendText: (text, style) => {
+            const span = document.createElement("span");
+            span.setAttribute("style", style);
+            span.appendChild(document.createTextNode(text));
+            containerDiv.appendChild(span);
+        },
+        clearContainer: () => {
+            while (containerDiv.firstChild) {
+                containerDiv.removeChild(containerDiv.firstChild);
+            }
+        },
     };
-    callback(container);
+    callback(containerTools);
     header.append(containerDiv);
 };
 
@@ -250,3 +261,23 @@ withContainer(({ addButton }) => {
     addButton("Trade to cap titanium", tradeToCapTitanium);
     addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
 }, borderStyle);
+
+withContainer(({ clearContainer, appendText }) => {
+    let state = {
+        cycle: undefined,
+        cycleYear: undefined,
+    };
+    const updateCycles = () => {
+        const { cycles, cycle, cycleYearColors, cycleYear } = gamePage.calendar;
+        if (cycle !== state.cycle || cycleYear !== state.cycleYear) {
+            clearContainer();
+            cycles.forEach((current, index) => {
+                const color = cycle === index 
+                    ? cycleYearColors[cycleYear]
+                    : "darkgray";
+                appendText(current.uglyph, `color: ${color}`)
+            });
+        }
+    };
+    setInterval(updateCycles, 200);
+});
