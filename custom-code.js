@@ -199,6 +199,7 @@ const withContainer = (callback, style) => {
             newBtn.onclick = handleClick;
             newBtn.id = id;
             containerDiv.appendChild(newBtn);
+            return newBtn;
         },
         addCheckbox: (labelText, name, checked) => { 
             const label = document.createElement("label");
@@ -216,12 +217,14 @@ const withContainer = (callback, style) => {
             label.appendChild(checkbox);
             label.appendChild(document.createTextNode(labelText));
             containerDiv.appendChild(label);
+            return checkbox;
         },
         appendText: (text, style) => {
             const span = document.createElement("span");
             span.setAttribute("style", style);
             span.appendChild(document.createTextNode(text));
             containerDiv.appendChild(span);
+            return span;
         },
         clearContainer: () => {
             while (containerDiv.firstChild) {
@@ -272,10 +275,10 @@ withContainer(({ clearContainer, appendText }) => {
         if (cycle !== state.cycle || cycleYear !== state.cycleYear) {
             clearContainer();
             cycles.forEach((current, index) => {
-                const color = cycle === index 
-                    ? cycleYearColors[cycleYear]
-                    : "darkgray";
-                appendText(current.uglyph, `color: ${color}`)
+                const style = cycle === index 
+                    ? `font-weight: bold; color: ${cycleYearColors[cycleYear]}`
+                    : "color: darkgray";
+                appendText(current.uglyph, `padding-right: 5%; ${style}`);
             });
         }
     };
