@@ -157,7 +157,7 @@ const spendAndPray = () => {
 
 const craftMyResources = () => {
     const stuff = [];
-    const { beam, slab, plate, steel, wood } = toggleValues;
+    const { beam, slab, plate, steel, wood, kerosene, thorium } = toggleValues;
     if (steel) {
         stuff.push("steel");
     }
@@ -172,6 +172,12 @@ const craftMyResources = () => {
     }
     if (wood) {
         stuff.push("wood");
+    }
+    if (kerosene) {
+        stuff.push("kerosene");
+    }
+    if (thorium) {
+        stuff.push("thorium");
     }
     stuff.forEach(res => gamePage.craftAll(res));
 };
@@ -262,7 +268,9 @@ withContainer(({ addButton, addCheckbox }) => {
     addCheckbox("Beam", "beam", true);
     addCheckbox("Slab", "slab", true);
     addCheckbox("Plate", "plate");
-    addCheckbox("Steel", "steel", true);
+    addCheckbox("Steel", "steel");
+    addCheckbox("Kerosene", "kerosene");
+    addCheckbox("Thorium", "thorium");
 }, borderStyle);
 
 withContainer(({ addButton, addCheckbox }) => {
