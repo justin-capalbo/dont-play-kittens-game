@@ -236,33 +236,46 @@ const withContainer = (callback, style) => {
     header.append(containerDiv);
 };
 
-const borderStyle = `
-    border: 1px solid darkgray; 
+const borderStyleMinimalist = `
+    border: 1px solid rgba(200, 200, 200, 0.5); 
     margin-top: 4px;
     padding: 4px;
-    border-radius: 3px;
+    border-radius: 11px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
 `;
 
+const borderStyleGold = `
+    margin-top: 6px;
+    box-shadow: 1px 1px 5px #000000 inset, 0 1px 2px rgba(200, 200, 200, 0.1);
+    padding: 5px 8px;
+    min-height: 5% !important;
+    height: unset !important;
+    max-height: calc(100% - 100px) !important;
+    scrollbar-width: thin;
+`;
+
+const borderStyle = borderStyleMinimalist;
+
 withContainer(({ addButton, addCheckbox }) => {
-    addButton("Make stuff", craftMyResources);
-    addCheckbox("Wood", "wood", true);
+    addButton("Make stuff (Q)", craftMyResources);
+    addCheckbox("Wood", "wood");
     addCheckbox("Beam", "beam", true);
     addCheckbox("Slab", "slab", true);
     addCheckbox("Plate", "plate");
-    addCheckbox("Steel", "steel");
+    addCheckbox("Steel", "steel", true);
 }, borderStyle);
 
 withContainer(({ addButton, addCheckbox }) => {
-    addButton("Do culture tasks", spendCulture);
-    addButton("Do culture tasks and praise", spendAndPray);
+    addButton("Do culture tasks (S)", spendCulture);
+    addButton("Do culture tasks and praise (W)", spendAndPray);
     addCheckbox("Manuscripts", "manuscript", true);
     addCheckbox("Compendiums", "compendium");
     addCheckbox("Blueprints", "blueprint");
 }, borderStyle);
 
 withContainer(({ addButton }) => {
-    addButton("Trade to cap titanium", tradeToCapTitanium);
-    addButton("Trade for coal (match iron)", tradeWithSpiders, "spiderBtn");
+    addButton("Trade to cap titanium (E)", tradeToCapTitanium);
+    addButton("Trade for coal, match iron (R)", tradeWithSpiders, "spiderBtn");
 }, borderStyle);
 
 withContainer(({ clearContainer, appendText }) => {
@@ -284,3 +297,44 @@ withContainer(({ clearContainer, appendText }) => {
     };
     setInterval(updateCycles, 200);
 });
+
+const LOWERCASE_KEYCODES = {
+	q: 113,
+	w: 119,
+	s: 115,
+	e: 101,
+	r: 114,
+};
+
+window.onkeypress = (e) => {
+	switch (e.keyCode) {
+		case LOWERCASE_KEYCODES.q:
+		case KeyEvent.DOM_VK_Q: {
+			craftMyResources();
+			break;
+		}
+		case LOWERCASE_KEYCODES.w:
+		case KeyEvent.DOM_VK_W: {
+			spendAndPray();
+			break;
+		}
+		case LOWERCASE_KEYCODES.s:
+		case KeyEvent.DOM_VK_S: {
+			spendCulture();
+			break;
+		}
+		case LOWERCASE_KEYCODES.e:
+		case KeyEvent.DOM_VK_E: {
+			tradeToCapTitanium();
+			break;
+		}
+		case LOWERCASE_KEYCODES.r:
+		case KeyEvent.DOM_VK_R: {
+			tradeWithSpiders();
+			break;
+		}
+		default: { 
+			break;
+		}
+	}
+}
