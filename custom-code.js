@@ -1,5 +1,3 @@
-/* Zebra stuff */
-
 const getAverageTitaniumPerTrade = () => {
     let standingRatio = game.getEffect("standingRatio");
 
@@ -52,24 +50,46 @@ const getCappedResourcesForTrading = (tradeResName, tradeResAmt) => {
     };
 }
 
-const tradeToCapTitanium = () => {
+const tradeToCapTitanium = (tradesReq = 0) => {
     const { tradesPossible, cappedResources } = getCappedResourcesForTrading("slab", 50);
-
+	
     if (tradesPossible === 0) {
         game.msg(`Not enough ${cappedResources.join(",")} to trade with zebras`);
         return;
     }
+	
+	var optimalZebraTrades;
+	if (tradesReq > 0) {
+		optimalZebraTrades = tradesReq;
+	} else {
+		optimalZebraTrades = getOptimalZebraTrades();
+	}
+	
+	const titanium = game.resPool.get("titanium");
+    const titaniumBelow = titanium.maxValue - titanium.value;
 
-    const optimalZebraTrades = getOptimalZebraTrades();
     const nbTrades = Math.min(tradesPossible, optimalZebraTrades);
 
     game.msg(`Approximately ${optimalZebraTrades} trades needed to cap Titanium`);
     if (nbTrades < optimalZebraTrades) {
         game.msg(`Trade with zebras limited to ${nbTrades} by ${cappedResources.join(",")}`);
-    }
+    } 
 
     var zebras = game.diplomacy.get("zebras");
     game.diplomacy.tradeMultiple(zebras, nbTrades);
+
+	if (nbTrades === optimalZebraTrades) {
+		const titanium = game.resPool.get("titanium"); // not sure if this variable will update
+		titaniumBelowNew = titanium.maxValue - titanium.value;
+		if (titaniumBelowNew > 0) { 
+			titaniumGained = titaniumBelow - titaniumBelowNew;
+			titaniumPerTrade = titaniumGained/nbTrades;	
+			newTrades = Math.floor(titaniumBelowNew/titaniumPerTrade) + 1;
+			game.msg(`Short by ${newTrades} trades, recursing...`);
+			tradeToCapTitanium(newTrades);
+		}
+	}
+	
 }
 
 
