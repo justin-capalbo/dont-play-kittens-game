@@ -60,6 +60,12 @@ const tradeToCapTitanium = () => {
         return;
     }
 
+    const zebras = game.diplomacy.get("zebras");
+    if (!zebras.unlocked) {
+        game.msg("Zebras are not unlocked");
+        return;
+    }
+
     const optimalZebraTrades = getOptimalZebraTrades();
     const nbTrades = Math.min(tradesPossible, optimalZebraTrades);
 
@@ -68,7 +74,6 @@ const tradeToCapTitanium = () => {
         game.msg(`Trade with zebras limited to ${nbTrades} by ${cappedResources.join(",")}`);
     }
 
-    var zebras = game.diplomacy.get("zebras");
     game.diplomacy.tradeMultiple(zebras, nbTrades);
 }
 
@@ -133,9 +138,9 @@ const tradeWithSpiders = () => {
 
 /* Game Logic*/
 
-const spendCulture = () => {
+const huntAndPray = () => {
     const resources = [ "parchment" ];
-    const { blueprint, compendium, manuscript } = toggleValues;
+    const { blueprint, compendium, manuscript, praise, tradeLeviathans } = toggleValues;
     if (blueprint) {
         resources.push("blueprint");
     }
@@ -145,15 +150,18 @@ const spendCulture = () => {
     if (manuscript) {
         resources.push("manuscript");
     }
+    if (praise) {
+        document.getElementById("fastPraiseContainer").firstChild.click()
+    }
+    if (tradeLeviathans) {
+        const leviathans = game.diplomacy.get("leviathans");
+        if (leviathans.unlocked) {
+            game.diplomacy.tradeAll(leviathans);
+        }
+    }
     resources.forEach(res => gamePage.craftAll(res));
     gamePage.huntAll({ preventDefault: () => null });
 }
-
-const spendAndPray = () => {
-    spendCulture();
-    document.getElementById("fastPraiseContainer").firstChild.click()
-};
-
 
 const craftMyResources = () => {
     const stuff = [];
@@ -180,6 +188,30 @@ const craftMyResources = () => {
         stuff.push("thorium");
     }
     stuff.forEach(res => gamePage.craftAll(res));
+};
+
+const shatterTCs = (times) => {
+    // What is this hack 
+    const btn = gamePage.timeTab.children[2].children[0].children[0];
+    if(!btn.model){
+        curTab=gamePage.ui.activeTabId;
+        gamePage.ui.activeTabId = "Time";
+        gamePage.ui.render();
+        gamePage.ui.activeTabId = curTab;
+        gamePage.ui.render();
+    }
+
+    const price = btn.controller.getPrices(btn.model)[0].val;
+
+    if (game.resPool.get("timeCrystal").value < times * price) {
+        game.msg(`Not enough time crystal to shatter, would cost ${times * price} at ${price} per shatter`);
+        return;
+    }
+    btn.controller.doShatterAmt(btn.model, times, callback = (result) => { if (result) { btn.update(); } });
+    const heat = game.time.heat.toFixed(3);
+    const heatMax = game.getEffect("heatMax");
+    const overHeat = heat > heatMax;
+    game.msg(`${overHeat ? "!!! " : ""}Heat at ${heat}/${heatMax}${overHeat ? " !!!" : ""}`, overHeat ? "important" : undefined);
 };
 
 /* User interface */
@@ -274,16 +306,23 @@ withContainer(({ addButton, addCheckbox }) => {
 }, borderStyle);
 
 withContainer(({ addButton, addCheckbox }) => {
-    addButton("Do culture tasks (S)", spendCulture);
-    addButton("Do culture tasks and praise (W)", spendAndPray);
-    addCheckbox("Manuscripts", "manuscript", true);
-    addCheckbox("Compendiums", "compendium");
-    addCheckbox("Blueprints", "blueprint");
+    addButton("Hunt and... (W)", huntAndPray);
+    addCheckbox("Craft Manuscripts", "manuscript", true);
+    addCheckbox("Craft Compendiums", "compendium");
+    addCheckbox("Craft Blueprints", "blueprint");
+    addCheckbox("Praise the Sun", "praise");
+    addCheckbox("Trade with Leviathans", "tradeLeviathans");
 }, borderStyle);
 
 withContainer(({ addButton }) => {
     addButton("Trade to cap titanium (E)", tradeToCapTitanium);
     addButton("Trade for coal, match iron (R)", tradeWithSpiders, "spiderBtn");
+}, borderStyle);
+
+withContainer(({ addButton }) => {
+    addButton("Shatter TC (A)", () => shatterTCs(1));
+    addButton("Shatter TC x5 (S)", () => shatterTCs(5));
+    addButton("Shatter TC x45 (D)", () => shatterTCs(45));
 }, borderStyle);
 
 withContainer(({ clearContainer, appendText }) => {
@@ -311,7 +350,12 @@ const LOWERCASE_KEYCODES = {
 	w: 119,
 	s: 115,
 	e: 101,
-	r: 114,
+    r: 114,
+    a: 97,
+    d: 100,
+    z: 122,
+    x: 120,
+    c: 99,
 };
 
 window.onkeypress = (e) => {
@@ -323,12 +367,7 @@ window.onkeypress = (e) => {
 		}
 		case LOWERCASE_KEYCODES.w:
 		case KeyEvent.DOM_VK_W: {
-			spendAndPray();
-			break;
-		}
-		case LOWERCASE_KEYCODES.s:
-		case KeyEvent.DOM_VK_S: {
-			spendCulture();
+			huntAndPray();
 			break;
 		}
 		case LOWERCASE_KEYCODES.e:
@@ -339,6 +378,33 @@ window.onkeypress = (e) => {
 		case LOWERCASE_KEYCODES.r:
 		case KeyEvent.DOM_VK_R: {
 			tradeWithSpiders();
+			break;
+		}
+		case LOWERCASE_KEYCODES.a:
+		case KeyEvent.DOM_VK_A: {
+            shatterTCs(1);
+			break;
+		}
+		case LOWERCASE_KEYCODES.s:
+		case KeyEvent.DOM_VK_S: {
+            shatterTCs(5);
+			break;
+		}
+		case LOWERCASE_KEYCODES.d:
+		case KeyEvent.DOM_VK_D: {
+            shatterTCs(45);
+			break;
+		}
+		case LOWERCASE_KEYCODES.z:
+		case KeyEvent.DOM_VK_Z: {
+			break;
+		}
+		case LOWERCASE_KEYCODES.x:
+		case KeyEvent.DOM_VK_X: {
+			break;
+		}
+		case LOWERCASE_KEYCODES.c:
+		case KeyEvent.DOM_VK_C: {
 			break;
 		}
 		default: { 
