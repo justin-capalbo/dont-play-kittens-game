@@ -211,7 +211,8 @@ const shatterTCs = (times) => {
     const heat = game.time.heat.toFixed(3);
     const heatMax = game.getEffect("heatMax");
     const overHeat = heat > heatMax;
-    game.msg(`${overHeat ? "!!! " : ""}Heat at ${heat}/${heatMax}${overHeat ? " !!!" : ""}`, overHeat ? "important" : undefined);
+    const pct = (heat * 100 / heatMax).toFixed(2);
+    game.msg(`${overHeat ? "!!! " : ""}Heat at ${heat}/${heatMax} | ${pct}%${overHeat ? " !!!" : ""}`, overHeat ? "important" : undefined);
 };
 
 /* User interface */
