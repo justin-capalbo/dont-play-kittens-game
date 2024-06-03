@@ -306,33 +306,25 @@ withContainer(({ clearContainer, appendText }) => {
     setInterval(updateCycles, 200);
 });
 
-const LOWERCASE_KEYCODES = {
-	q: 113,
-	w: 119,
-	s: 115,
-	e: 101,
-	r: 114,
-};
-
 window.onkeydown = (e) => {
-	switch (e.keyCode) {
-		case LOWERCASE_KEYCODES.q: {
+	switch (e.key.toLowerCase()) {
+		case 'q': {
 			craftMyResources();
 			break;
 		}
-		case LOWERCASE_KEYCODES.w: {
+		case 'w': {
 			spendAndPray();
 			break;
 		}
-		case LOWERCASE_KEYCODES.s: {
+		case 's': {
 			spendCulture();
 			break;
 		}
-		case LOWERCASE_KEYCODES.e: {
+		case 'e': {
 			tradeToCapTitanium();
 			break;
 		}
-		case LOWERCASE_KEYCODES.r: {
+		case 'r': {
 			tradeWithSpiders();
 			break;
 		}
