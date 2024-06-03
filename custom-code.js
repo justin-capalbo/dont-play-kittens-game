@@ -314,7 +314,7 @@ const LOWERCASE_KEYCODES = {
 	r: 114,
 };
 
-window.onkeypress = (e) => {
+window.onkeydown = (e) => {
 	switch (e.keyCode) {
 		case LOWERCASE_KEYCODES.q: {
 			craftMyResources();
