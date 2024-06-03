@@ -314,30 +314,25 @@ const LOWERCASE_KEYCODES = {
 	r: 114,
 };
 
-window.onkeypress = (e) => {
+window.onkeydown = (e) => {
 	switch (e.keyCode) {
-		case LOWERCASE_KEYCODES.q:
-		case KeyEvent.DOM_VK_Q: {
+		case LOWERCASE_KEYCODES.q: {
 			craftMyResources();
 			break;
 		}
-		case LOWERCASE_KEYCODES.w:
-		case KeyEvent.DOM_VK_W: {
+		case LOWERCASE_KEYCODES.w: {
 			spendAndPray();
 			break;
 		}
-		case LOWERCASE_KEYCODES.s:
-		case KeyEvent.DOM_VK_S: {
+		case LOWERCASE_KEYCODES.s: {
 			spendCulture();
 			break;
 		}
-		case LOWERCASE_KEYCODES.e:
-		case KeyEvent.DOM_VK_E: {
+		case LOWERCASE_KEYCODES.e: {
 			tradeToCapTitanium();
 			break;
 		}
-		case LOWERCASE_KEYCODES.r:
-		case KeyEvent.DOM_VK_R: {
+		case LOWERCASE_KEYCODES.r: {
 			tradeWithSpiders();
 			break;
 		}
